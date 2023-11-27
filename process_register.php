@@ -7,11 +7,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = $_POST["password"];
     $_SESSION['username'] = $username;
 
-    $host = "localhost";
-    $user = "root";
-    $password_db = "";
-    $database = "projeto_cinema";
-
     $conn = new mysqli($host, $user, $password_db, $database);
 
     if ($conn->connect_error) {
