@@ -1,9 +1,8 @@
 <?php
 
-// Inclui o arquivo acessoDados.php, que parece conter funções relacionadas ao acesso a dados.
 require_once('connectdb.php');
 
-// Inicia a sessão PHP.
+
 session_start();
 
 if (isset($_SESSION['username'])) {

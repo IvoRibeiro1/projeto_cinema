@@ -1,36 +1,22 @@
 <?php
-
+require_once('connectdb.php');
 session_start();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST["username"];
     $password = $_POST["password"];
-    $_SESSION['username'] = $username;
+    // $_SESSION['username'] = $username;
    
-    $host = "localhost";
-    $user = "root";
-    $password_db = "";
-    $database = "projeto_cinema";
+    $result = getUserByLogin($username, $password)[0];
 
-   
-    $conn = new mysqli($host, $user, $password_db, $database);
+    if($result == true){
+        $_SESSION['userId'] = $result['id'];
+        $_SESSION['username'] = $result['username'];
 
-    
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
+        //header
     }
 
-    $query = "SELECT * FROM users WHERE username='$username' AND password='$password'";
-    $result = $conn->query($query);
-
-    if ($result->num_rows > 0) {
-        header("location:index.php");
-
-    } else {
-        echo "Credenciais invalidas. Tente novamente.";
-    }
-
-   
-    $conn->close();
 }
+
+
 ?>

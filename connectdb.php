@@ -41,3 +41,18 @@ function getCategoryIdByName($categoria) {
 
     return $row ? $row['id'] : null;
 }
+
+function getUserByLogin($username, $password){
+
+    
+    $conexao = estabelerConexao();
+
+    $stmt = $conexao->prepare("SELECT * FROM users WHERE username=:username AND password=:password");
+    $stmt->bindParam(':username', $username);
+    $stmt->bindParam(':password', $password);
+    $stmt->execute();
+
+    $row = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    return $row;
+}

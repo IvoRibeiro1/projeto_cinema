@@ -1,7 +1,6 @@
 <?php
 require_once('connectdb.php');
-session_start();
-
+session_start();    
 
 if (isset($_SESSION['username'])) {
     $username = $_SESSION['username'];
@@ -13,7 +12,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $movieName = $_POST["movieName"];
     $rating = $_POST["rating"];
     $notes = $_POST["notes"];
-    $userId = $_SESSION["username"]; 
+    $userId = $_SESSION['userId'];
 
     $categoryId = getCategoryIdByName($category);
 
