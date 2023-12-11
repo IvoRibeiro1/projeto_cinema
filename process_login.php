@@ -5,18 +5,18 @@ session_start();
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST["username"];
     $password = $_POST["password"];
-    // $_SESSION['username'] = $username;
    
-    $result = getUserByLogin($username, $password)[0];
+    $result = getUserByLogin($username, $password);
 
-    if($result == true){
-        $_SESSION['userId'] = $result['id'];
-        $_SESSION['username'] = $result['username'];
-
-        //header
+    if (!empty($result)) {
+        $user = $result[0];
+        $_SESSION['userId'] = $user['id'];
+        $_SESSION['username'] = $user['username'];
+        header("location:index.php");
+        exit();
+    } else {
+        header("location:faillogin.php");
+        //echo "Login failed. Please check your username and password.";
     }
-
 }
-
-
 ?>

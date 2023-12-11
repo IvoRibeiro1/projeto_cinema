@@ -56,3 +56,50 @@ function getUserByLogin($username, $password){
 
     return $row;
 }
+
+//function getCategorias()
+//{
+    //$conexao = estabelerConexao();
+    //$stmt = $conexao->query('SELECT id, nome FROM categorias');
+    //$categorias = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    //return $categorias;
+//}
+
+function getFilmesByCategoria($categoria)
+{
+    $conexao = estabelerConexao();
+
+    // Obtém o ID da categoria pelo nome usando a função getCategoryIdByName()
+    $categoria_id = getCategoryIdByName($categoria);
+
+    // Se o ID da categoria existir, busca os filmes
+    if ($categoria_id) {
+        $stmt = $conexao->prepare('SELECT * FROM filmes WHERE id_categorias = :categoria_id ORDER BY id DESC LIMIT 3');
+        $stmt->bindParam(':categoria_id', $categoria_id);
+        $stmt->execute();
+        $filmes = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $filmes;
+    } else {
+        return array(); // Retorna um array vazio se a categoria não for encontrada
+    }
+}
+
+
+function getFilmesByCategoriaAll($categoria)
+{
+    $conexao = estabelerConexao();
+
+    // Obtém o ID da categoria pelo nome usando a função getCategoryIdByName()
+    $categoria_id = getCategoryIdByName($categoria);
+
+    // Se o ID da categoria existir, busca os filmes
+    if ($categoria_id) {
+        $stmt = $conexao->prepare('SELECT * FROM filmes WHERE id_categorias = :categoria_id');
+        $stmt->bindParam(':categoria_id', $categoria_id);
+        $stmt->execute();
+        $filmes = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $filmes;
+    } else {
+        return array(); // Retorna um array vazio se a categoria não for encontrada
+    }
+}

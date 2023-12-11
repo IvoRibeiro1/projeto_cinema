@@ -1,5 +1,5 @@
 <?php
-
+require_once('connectdb.php');
 session_start();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -7,21 +7,37 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = $_POST["password"];
     $_SESSION['username'] = $username;
 
-    $conn = new mysqli($host, $user, $password_db, $database);
+    $conexao = estabelerConexao();
 
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
+    // Assuming $conexao is your database connection
+    $conn = $conexao;
+
+    try {
+        // Check if the connection is successful before executing the query
+        if (!$conn) {
+            die("Connection failed: " . $conn->errorInfo());
+        }
+
+        // Hash the password before storing it in the database
+        $passwordHash = password_hash($password, PASSWORD_DEFAULT);
+
+        $query = "INSERT INTO users (username, password) VALUES (:username, :password)";
+        $stmt = $conn->prepare($query);
+        $stmt->bindParam(':username', $username);
+        $stmt->bindParam(':password', $passwordHash);
+
+        // Execute the prepared statement
+        if ($stmt->execute()) {
+            header("location: sucesso_register.php");
+            exit(); // Add exit to stop further execution
+        } else {
+            echo "Error: " . $stmt->errorInfo()[2];
+        }
+    } catch (Exception $e) {
+        echo 'Caught exception: ',  $e->getMessage(), "\n";
+    } finally {
+        // Close the connection in the finally block
+        $conn = null;
     }
-
-    $query = "INSERT INTO users (username, password) VALUES ('$username', '$password')";
-    
-    if ($conn->query($query) === TRUE) {
-        header("location:sucesso_register.php");
-       
-    } else {
-        echo "Erro: " . $query . "<br>" . $conn->error;
-    }
-
-    $conn->close();
 }
 ?>

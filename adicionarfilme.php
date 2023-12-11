@@ -58,6 +58,16 @@ if (isset($_SESSION['username'])) {
             border-radius: 4px;
             cursor: pointer;
         }
+
+        .menu{
+            background-color: #333;
+            color: #fff;
+            padding:10px 45px;
+            border: none;
+            border-radius: 4px;
+            text-decoration: none;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -83,7 +93,13 @@ if (isset($_SESSION['username'])) {
         <textarea id="notes" name="notes" rows="4"></textarea>
 
         <button type="submit">Adicionar Filme</button>
+        <br>
+        <br>
+        <a class="menu" href="index.php"> Voltar </a>
     </form>
 
 </body>
+
+
+
 </html>

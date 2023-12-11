@@ -7,37 +7,42 @@ if (isset($_SESSION['username'])) {
     $username = $_SESSION['username'];
 }
 
+// Consulta para obter todos os filmes
+$sql = "SELECT * FROM filmes";
+
+try {
+    $conexao = estabelerConexao();
+    $stmt = $conexao->query($sql);
+    $filmes = $stmt->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    echo "Erro ao obter filmes: " . $e->getMessage();
+}
+
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-<link rel="stylesheet" href="styleindex.css">
+    <link rel="stylesheet" href="styleindex.css">
 </head>
 
 <body>
 
     <header>
-    <div class="navbar">
-      
-      <a href="index.php">Página Inicial</a>
-      <a href="minhaslistas.php">Minhas listas</a>
-      <a href="comunidade.php">Comunidade</a>
-      <a class="buttonadd" href="adicionarfilme.php">Adicionar filme</a>
-  </div>
+        <div class="navbar">
+            <a href="index.php">Página Inicial</a>
+            <a href="minhaslistas.php">Minhas listas</a>
+            <a href="comunidade.php">Comunidade</a>
+            <a class="buttonadd" href="adicionarfilme.php">Adicionar filme</a>
+        </div>
 
-  <div class="user-info">
-     
-      <a class="logout" href="logout.php">Logout</a>
-  </div>
+        <div class="user-info">
+            <a class="logout" href="logout.php">Logout</a>
+        </div>
     </header>
 
-    <div class="welcome">
-        <h2>Bem-vindo, <?php echo $username; ?>!</h2>
-    </div>
-
-    <div class="categories">
+    <section class="filmes">
     <?php
     // Obter categorias usando a função getCategorias()
     $categorias = getCategorias();
@@ -45,9 +50,9 @@ if (isset($_SESSION['username'])) {
     if ($categorias) {
         foreach ($categorias as $categoria) {
             // Obter filmes da categoria usando a função getFilmesByCategoria()
-            $filmes = getFilmesByCategoria($categoria);
+            $filmes = getFilmesByCategoriaAll($categoria);
 
-            echo '<h2 class="titulo">' . $categoria . '</h2>';
+            echo '<h2>' . $categoria . '</h2>';
             echo '<table class="categories-table">';
             echo '<thead>';
             echo '<tr>';
@@ -66,8 +71,8 @@ if (isset($_SESSION['username'])) {
                     echo '<td>' . $filme['nomefilme'] . '</td>';
                     echo '<td>' . $filme['rating'] . '</td>';
                     echo '<td>' . $filme['notas'] . '</td>';
-                    echo '<td>' . '<a href="delete.php?id=' . $filme['id'] . '"><button class="delete">Eliminar</button></a>' . ' </td>';
-                    echo '<td>' . '<a href="update.php?id=' . $filme['id'] . '"><button class="update">Update</button></a>' . ' </td>';
+                    echo '<td>' . '<a href="delete1.php?id=' . $filme['id'] . '"><button class="delete">Eliminar</button></a>' . ' </td>';
+                    echo '<td>' . '<a href="update1.php?id=' . $filme['id'] . '"><button class="update">Update</button></a>' . ' </td>';
                     echo '</tr>';
                 }
             } else {
@@ -83,9 +88,9 @@ if (isset($_SESSION['username'])) {
         echo '<p>Nenhuma categoria encontrada.</p>';
     }
     ?>
-</div>
+    </section>
 
-   
 
 </body>
+
 </html>

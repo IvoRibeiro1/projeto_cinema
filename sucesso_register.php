@@ -20,7 +20,7 @@
         <div class="container">
         <div class="form-container">
             <form action="process_login.php" method="post">
-                <h2><?php echo "Bem-vindo, $username!" ?></h2>
+                <h2><?php echo "Parabéns, $username!" ?></h2>
                 <label for="username">A sua conta foi criada com sucesso</label>
                 <br>
                 <a class="button" href="login.php">Voltar para login</a>

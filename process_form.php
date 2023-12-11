@@ -28,11 +28,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt->bindParam(':userId', $userId);
     $stmt->bindParam(':categoryId', $categoryId);
 
+    $movieId = $conexao->lastInsertId();  // Obtém o ID do filme recém-inserido
 
+    $communitySql = "INSERT INTO community_posts (username, movie_title, rating, notas, post_time) VALUES (:username, :movieName, :rating, :notes, NOW())";
+
+    $communityStmt = $conexao->prepare($communitySql);
+    $communityStmt->bindParam(':username', $username);
+    $communityStmt->bindParam(':movieName', $movieName);
+    $communityStmt->bindParam(':rating', $rating);
+    $communityStmt->bindParam(':notes', $notes);
+    
+    try {
+        $communityStmt->execute();
+    } catch (PDOException $e) {
+        echo "Erro ao adicionar post à comunidade: " . $e->getMessage();
+    }
+    
     if ($stmt->execute()) {
-        echo "Filme adicionado com sucesso!";
+        header("location:adicionarfilme.php");
     } else {
         echo "Erro ao adicionar filme: " . $stmt->errorInfo()[2];
     }
-}
+}    
 ?>
